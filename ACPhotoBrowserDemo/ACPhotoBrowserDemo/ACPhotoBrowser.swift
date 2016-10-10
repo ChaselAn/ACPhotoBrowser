@@ -8,18 +8,44 @@
 
 import UIKit
 
-protocol ACPhotoBrowserDelegate: NSObjectProtocol {
-  //图片数组的数量
-  func numberOfImages(_ photoBrowser: ACPhotoBrowser) -> Int
-}
-
 fileprivate let reuseIdentifier = "ACPhotoBrowserCell"
 class ACPhotoBrowser: UIViewController {
   fileprivate var imgCollectionView: UICollectionView!
-  weak var delegate: ACPhotoBrowserDelegate!
   
-  init(delegate: ACPhotoBrowserDelegate) {
-    self.delegate = delegate
+  fileprivate enum BrowserType {
+    case SingleNetImage(url: String)
+    case SomeNetImages(urls: [String])
+    case SingleLocalImage(img: UIImage)
+    case SomeLocalImages(imgs: [UIImage])
+  }
+  
+//  fileprivate var imageUrl = ""
+//  fileprivate var imageUrlList: [String] = []
+//  fileprivate var image: UIImage = UIImage()
+//  fileprivate var imageList: [UIImage] = []
+  fileprivate var type: BrowserType?
+
+  // 单张网络图片的查看器，此时禁止左滑右滑，不显示索引（1/10）
+  init(imageUrl: String) {
+    self.type = BrowserType.SingleNetImage(url: imageUrl)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  // 多张网络图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引
+  init(imageUrlList: [String]){
+    self.type = BrowserType.SomeNetImages(urls: imageUrlList)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  // 单张本地图片的查看器，此时禁止左滑右滑，不显示索引（1/10）
+  init(image: UIImage) {
+    self.type = BrowserType.SingleLocalImage(img: image)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  // 多张本地图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引
+  init(imageList: [UIImage]) {
+    self.type = BrowserType.SomeLocalImages(imgs: imageList)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -33,12 +59,16 @@ class ACPhotoBrowser: UIViewController {
     imgCollectionView.register(ACPhotoBrowserCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     view.addSubview(imgCollectionView)
   }
+  
+  func show() {
+    
+  }
 
 }
 
 extension ACPhotoBrowser: UICollectionViewDataSource{
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return delegate.numberOfImages(self)
+    return 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
