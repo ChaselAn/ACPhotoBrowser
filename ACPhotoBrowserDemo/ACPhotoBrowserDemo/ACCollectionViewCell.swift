@@ -12,11 +12,15 @@ import SDWebImage
 class ACCollectionViewCell: UICollectionViewCell {
   
   fileprivate lazy var imgView = UIImageView()
+  var jumpBrowser: (()->())?
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     contentView.addSubview(imgView)
     imgView.frame = contentView.frame
+    imgView.isUserInteractionEnabled = true
+    let tap = UITapGestureRecognizer(target: self, action: #selector(ACCollectionViewCell.tap))
+    imgView.addGestureRecognizer(tap)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -25,5 +29,9 @@ class ACCollectionViewCell: UICollectionViewCell {
   
   func setInfo(url: String){
     imgView.sd_setImage(with: URL(string: url))
+  }
+  
+  @objc fileprivate func tap(){
+    jumpBrowser?()
   }
 }
