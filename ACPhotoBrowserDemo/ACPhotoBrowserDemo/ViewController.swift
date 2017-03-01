@@ -43,8 +43,9 @@ extension ViewController{
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ACCollectionViewCell
     cell.setInfo(url: imgList[indexPath.item])
     cell.jumpBrowser = { [weak self] in
-      let browser = ACPhotoBrowser(imageUrlList: (self?.imgList)!)
-      self?.navigationController?.pushViewController(browser, animated: true)
+      let browser = ACPhotoBrowser(netImageUrlList: (self?.imgList)!)
+      browser.margin = 20
+      browser.show(by: .push(animated: true), displayIndex: indexPath.row)
     }
     return cell
   }
