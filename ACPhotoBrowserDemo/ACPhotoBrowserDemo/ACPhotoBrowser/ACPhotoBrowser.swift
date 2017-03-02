@@ -10,53 +10,63 @@ import UIKit
 
 fileprivate let reuseIdentifier = "ACPhotoBrowserCell"
 
-protocol ACPhotoBrowserDataSource: NSObjectProtocol {
+@objc protocol ACPhotoBrowserDataSource {
 
-  func numberOfItems(in photoBrowser: ACPhotoBrowser) -> Int
+  func numberOfImages(in photoBrowser: ACPhotoBrowser) -> Int
   
-  func photoBrowser(_ photoBrowser: ACPhotoBrowser, urlsForItemAt index: Int) -> String
+  @objc optional func photoBrowser(_ photoBrowser: ACPhotoBrowser, netImageUrlAt index: Int) -> String
+  
+  @objc optional func photoBrowser(_ photoBrowser: ACPhotoBrowser, placeholderImageAt index: Int) -> UIImage
+  
+  @objc optional func photoBrowser(_ photoBrowser: ACPhotoBrowser, localImageAt index: Int) -> UIImage?
 }
+
 
 class ACPhotoBrowser: UIViewController {
   //MARK: - 提供给外部的接口
+//  
+//  /// 单张网络图片的查看器，此时禁止左滑右滑，不显示索引
+//  ///
+//  /// - parameter imageUrl: 图片的url
+//  init(netImageUrl: String) {
+//    self.type = BrowserType.SingleNetImage(url: netImageUrl)
+//    super.init(nibName: nil, bundle: nil)
+//  }
+//  
+//  /// 多张网络图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引（1/10）
+//  ///
+//  /// - parameter imageUrlList: 图片的url的数组
+//  init(netImageUrlList: [String]){
+//    self.type = BrowserType.SomeNetImages(urls: netImageUrlList)
+//    super.init(nibName: nil, bundle: nil)
+//  }
+//  
+//  /// 单张本地图片的查看器，此时禁止左滑右滑，不显示索引
+//  ///
+//  /// - parameter image: 图片（UIImage格式）
+//  init(localImage: UIImage) {
+//    self.type = BrowserType.SingleLocalImage(img: localImage)
+//    super.init(nibName: nil, bundle: nil)
+//  }
+//  
+//  /// 多张本地图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引（1/10）
+//  ///
+//  /// - parameter imageList:    图片的数组
+//  init(localImageList: [UIImage]) {
+//    self.type = BrowserType.SomeLocalImages(imgs: localImageList)
+//    super.init(nibName: nil, bundle: nil)
+//  }
   
-  /// 单张网络图片的查看器，此时禁止左滑右滑，不显示索引
-  ///
-  /// - parameter imageUrl: 图片的url
-  init(netImageUrl: String) {
-    self.type = BrowserType.SingleNetImage(url: netImageUrl)
+  init() {
     super.init(nibName: nil, bundle: nil)
   }
-  
-  /// 多张网络图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引（1/10）
-  ///
-  /// - parameter imageUrlList: 图片的url的数组
-  init(netImageUrlList: [String]){
-    self.type = BrowserType.SomeNetImages(urls: netImageUrlList)
-    super.init(nibName: nil, bundle: nil)
-  }
-  
-  /// 单张本地图片的查看器，此时禁止左滑右滑，不显示索引
-  ///
-  /// - parameter image: 图片（UIImage格式）
-  init(localImage: UIImage) {
-    self.type = BrowserType.SingleLocalImage(img: localImage)
-    super.init(nibName: nil, bundle: nil)
-  }
-  
-  /// 多张本地图片的查看器，可以左滑右滑查看下一张上一张图片，显示索引（1/10）
-  ///
-  /// - parameter imageList:    图片的数组
-  init(localImageList: [UIImage]) {
-    self.type = BrowserType.SomeLocalImages(imgs: localImageList)
-    super.init(nibName: nil, bundle: nil)
-  }
-  
   
   // 多张图片之间的间距
   var margin: CGFloat = 0
   // 网络图片的占位图
-  var placeHolderImage: UIImage? = nil
+//  var placeHolderImage: UIImage? = nil
+  // 数据源
+  weak var dataSource: ACPhotoBrowserDataSource?
 
   /// 弹出PhotoBrowser
   ///
@@ -78,7 +88,7 @@ class ACPhotoBrowser: UIViewController {
   
   //MARK: - 暂不开放属性
   fileprivate var imgCollectionView: UICollectionView!
-  fileprivate var type: BrowserType?
+//  fileprivate var type: BrowserType?
   fileprivate var displayIndex: Int = 0
   
   required init?(coder aDecoder: NSCoder) {
@@ -90,12 +100,12 @@ class ACPhotoBrowser: UIViewController {
 //MARK: - 暂不开放接口
 extension ACPhotoBrowser {
   
-  fileprivate enum BrowserType {
-    case SingleNetImage(url: String)
-    case SomeNetImages(urls: [String])
-    case SingleLocalImage(img: UIImage)
-    case SomeLocalImages(imgs: [UIImage])
-  }
+//  fileprivate enum BrowserType {
+//    case SingleNetImage(url: String)
+//    case SomeNetImages(urls: [String])
+//    case SingleLocalImage(img: UIImage)
+//    case SomeLocalImages(imgs: [UIImage])
+//  }
   enum BrowserShowType {
     case push(animated: Bool)
     case present(animated: Bool)
@@ -131,36 +141,22 @@ extension ACPhotoBrowser {
 
 //MARK:- dataSource
 extension ACPhotoBrowser: UICollectionViewDataSource{
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let type = type else {
-      return 0
-    }
-    switch type {
-    case .SomeNetImages(urls: let urls):
-      return urls.count
-    case .SomeLocalImages(imgs: let imgs):
-      return imgs.count
-    default:
-      return 1
-    }
+    return dataSource?.numberOfImages(in: self) ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ACPhotoBrowserCell
-    cell.placeholderImage = placeHolderImage
-    guard let type = type else {
-      return cell
+    
+    if let localImage = dataSource?.photoBrowser?(self, localImageAt: indexPath.item) {
+      cell.setLocalImage(localImage)
+    } else {
+      let imageUrl = dataSource?.photoBrowser?(self, netImageUrlAt: indexPath.item)
+      let placeholderImage = dataSource?.photoBrowser?(self, placeholderImageAt: indexPath.item)
+      cell.setNetImage(imageUrl, placeholderImage: placeholderImage)
     }
-    switch type {
-    case .SingleNetImage(url: let url):
-      cell.imageUrl = url
-    case .SingleLocalImage(img: let img):
-      cell.image = img
-    case.SomeNetImages(urls: let urls):
-      cell.imageUrl = urls[indexPath.item]
-    case .SomeLocalImages(imgs: let imgs):
-      cell.image = imgs[indexPath.item]
-    }
+    
     return cell
   }
 }

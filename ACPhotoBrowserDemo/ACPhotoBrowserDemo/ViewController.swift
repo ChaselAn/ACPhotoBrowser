@@ -14,6 +14,8 @@ class ViewController: UICollectionViewController {
                                        "http://7xte1z.com1.z0.glb.clouddn.com/slider2.jpg",
                                        "http://7xte1z.com1.z0.glb.clouddn.com/slider3.jpg"]
   
+  var browser = ACPhotoBrowser()
+  
   override init(collectionViewLayout layout: UICollectionViewLayout) {
     let layout = UICollectionViewFlowLayout()
     layout.itemSize = CGSize(width: 100, height: 100)
@@ -29,7 +31,8 @@ class ViewController: UICollectionViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    browser.dataSource = self
+    browser.margin = 20
   }
 
 }
@@ -43,10 +46,21 @@ extension ViewController{
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ACCollectionViewCell
     cell.setInfo(url: imgList[indexPath.item])
     cell.jumpBrowser = { [weak self] in
-      let browser = ACPhotoBrowser(netImageUrlList: (self?.imgList)!)
-      browser.margin = 20
-      browser.show(by: .push(animated: true), displayIndex: indexPath.row)
+      guard let strongSelf = self else {
+        return
+      }
+      strongSelf.browser.show(by: .push(animated: true), displayIndex: indexPath.row)
     }
     return cell
+  }
+}
+
+extension ViewController: ACPhotoBrowserDataSource {
+  func numberOfImages(in photoBrowser: ACPhotoBrowser) -> Int {
+    return imgList.count
+  }
+  
+  func photoBrowser(_ photoBrowser: ACPhotoBrowser, netImageUrlAt index: Int) -> String {
+    return imgList[index]
   }
 }

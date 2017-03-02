@@ -17,7 +17,6 @@
 		43E504481E271DD800C94C54 /* ACPhotoBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E504461E271DD800C94C54 /* ACPhotoBrowser.swift */; };
 		43E504491E271DD800C94C54 /* ACPhotoBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E504471E271DD800C94C54 /* ACPhotoBrowserCell.swift */; };
 		43E5044D1E27235700C94C54 /* ACUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E5044C1E27235700C94C54 /* ACUtils.swift */; };
-		43E5044F1E272D2800C94C54 /* ACSimplePhotoBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E5044E1E272D2800C94C54 /* ACSimplePhotoBrowser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +33,6 @@
 		43E504461E271DD800C94C54 /* ACPhotoBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACPhotoBrowser.swift; sourceTree = "<group>"; };
 		43E504471E271DD800C94C54 /* ACPhotoBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACPhotoBrowserCell.swift; sourceTree = "<group>"; };
 		43E5044C1E27235700C94C54 /* ACUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACUtils.swift; sourceTree = "<group>"; };
-		43E5044E1E272D2800C94C54 /* ACSimplePhotoBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACSimplePhotoBrowser.swift; sourceTree = "<group>"; };
 		AEE73F1DD18FC48C64FA5229 /* Pods_ACPhotoBrowserDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ACPhotoBrowserDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -89,7 +87,6 @@
 				43E5044C1E27235700C94C54 /* ACUtils.swift */,
 				43E504461E271DD800C94C54 /* ACPhotoBrowser.swift */,
 				43E504471E271DD800C94C54 /* ACPhotoBrowserCell.swift */,
-				43E5044E1E272D2800C94C54 /* ACSimplePhotoBrowser.swift */,
 			);
 			path = ACPhotoBrowser;
 			sourceTree = "<group>";
@@ -241,7 +238,6 @@
 				43E504491E271DD800C94C54 /* ACPhotoBrowserCell.swift in Sources */,
 				43661BEB1DAB431400187663 /* AppDelegate.swift in Sources */,
 				43E5044D1E27235700C94C54 /* ACUtils.swift in Sources */,
-				43E5044F1E272D2800C94C54 /* ACSimplePhotoBrowser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
