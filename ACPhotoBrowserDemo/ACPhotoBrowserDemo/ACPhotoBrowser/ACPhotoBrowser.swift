@@ -75,6 +75,8 @@ class ACPhotoBrowser: UIViewController {
     }
   }
   
+  
+  //MARK: - 暂不开放属性
   fileprivate var imgCollectionView: UICollectionView!
   fileprivate var type: BrowserType?
   fileprivate var displayIndex: Int = 0
@@ -85,7 +87,7 @@ class ACPhotoBrowser: UIViewController {
 }
 
 
-//MARK: - 暂不开放接口和属性
+//MARK: - 暂不开放接口
 extension ACPhotoBrowser {
   
   fileprivate enum BrowserType {
@@ -115,6 +117,15 @@ extension ACPhotoBrowser {
     view.addSubview(imgCollectionView)
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: true)
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setNavigationBarHidden(false, animated: true)
+  }
 }
 
 
@@ -136,6 +147,7 @@ extension ACPhotoBrowser: UICollectionViewDataSource{
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ACPhotoBrowserCell
+    cell.placeholderImage = placeHolderImage
     guard let type = type else {
       return cell
     }
