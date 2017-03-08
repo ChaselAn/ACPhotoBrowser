@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2260BEF6E20395015341A832 /* Pods_ACPhotoBrowserDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE73F1DD18FC48C64FA5229 /* Pods_ACPhotoBrowserDemo.framework */; };
+		43306A5C1E6EA621009E4A9D /* ACPhotoBrowserTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306A5B1E6EA621009E4A9D /* ACPhotoBrowserTopView.swift */; };
+		43306A601E6EA70F009E4A9D /* ACPhotoBrowserResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43306A5F1E6EA70F009E4A9D /* ACPhotoBrowserResource.bundle */; };
 		43661BEB1DAB431400187663 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43661BEA1DAB431400187663 /* AppDelegate.swift */; };
 		43661BED1DAB431400187663 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43661BEC1DAB431400187663 /* ViewController.swift */; };
 		43661BF01DAB431400187663 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43661BEE1DAB431400187663 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 /* Begin PBXFileReference section */
 		1872526C9D574BCE7E739D67 /* Pods-ACPhotoBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACPhotoBrowserDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACPhotoBrowserDemo/Pods-ACPhotoBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		31042A7B6B2B0BC53E6D83A4 /* Pods-ACPhotoBrowserDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACPhotoBrowserDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACPhotoBrowserDemo/Pods-ACPhotoBrowserDemo.release.xcconfig"; sourceTree = "<group>"; };
+		43306A5B1E6EA621009E4A9D /* ACPhotoBrowserTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACPhotoBrowserTopView.swift; sourceTree = "<group>"; };
+		43306A5F1E6EA70F009E4A9D /* ACPhotoBrowserResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ACPhotoBrowserResource.bundle; sourceTree = "<group>"; };
 		43661BE71DAB431300187663 /* ACPhotoBrowserDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACPhotoBrowserDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43661BEA1DAB431400187663 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43661BEC1DAB431400187663 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 				43E5044C1E27235700C94C54 /* ACUtils.swift */,
 				43E504461E271DD800C94C54 /* ACPhotoBrowser.swift */,
 				43E504471E271DD800C94C54 /* ACPhotoBrowserCell.swift */,
+				43306A5B1E6EA621009E4A9D /* ACPhotoBrowserTopView.swift */,
+				43306A5F1E6EA70F009E4A9D /* ACPhotoBrowserResource.bundle */,
 			);
 			path = ACPhotoBrowser;
 			sourceTree = "<group>";
@@ -174,6 +180,7 @@
 				43661BF51DAB431400187663 /* LaunchScreen.storyboard in Resources */,
 				43661BF21DAB431400187663 /* Assets.xcassets in Resources */,
 				43661BF01DAB431400187663 /* Main.storyboard in Resources */,
+				43306A601E6EA70F009E4A9D /* ACPhotoBrowserResource.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +245,7 @@
 				43E504491E271DD800C94C54 /* ACPhotoBrowserCell.swift in Sources */,
 				43661BEB1DAB431400187663 /* AppDelegate.swift in Sources */,
 				43E5044D1E27235700C94C54 /* ACUtils.swift in Sources */,
+				43306A5C1E6EA621009E4A9D /* ACPhotoBrowserTopView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

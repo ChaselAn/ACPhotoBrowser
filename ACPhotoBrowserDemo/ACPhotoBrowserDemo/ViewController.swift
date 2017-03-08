@@ -14,7 +14,6 @@ class ViewController: UICollectionViewController {
                                        "http://7xte1z.com1.z0.glb.clouddn.com/slider2.jpg",
                                        "http://7xte1z.com1.z0.glb.clouddn.com/slider3.jpg"]
   
-  var browser = ACPhotoBrowser()
   
   override init(collectionViewLayout layout: UICollectionViewLayout) {
     let layout = UICollectionViewFlowLayout()
@@ -31,8 +30,6 @@ class ViewController: UICollectionViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    browser.dataSource = self
-    browser.margin = 20
   }
 
 }
@@ -49,7 +46,10 @@ extension ViewController{
       guard let strongSelf = self else {
         return
       }
-      strongSelf.browser.show(by: .push(animated: true), displayIndex: indexPath.row)
+      let browser = ACPhotoBrowser()
+      browser.dataSource = strongSelf
+      browser.margin = 20
+      browser.show(by: .push(animated: true), displayIndex: indexPath.row)
     }
     return cell
   }
@@ -62,5 +62,9 @@ extension ViewController: ACPhotoBrowserDataSource {
   
   func photoBrowser(_ photoBrowser: ACPhotoBrowser, netImageUrlAt index: Int) -> String {
     return imgList[index]
+  }
+  
+  func photoBrowser(_ photoBrowser: ACPhotoBrowser, placeholderImageAt index: Int) -> UIImage {
+    return UIImage(named: "ac_errorImg".ac_ImagePath)!
   }
 }

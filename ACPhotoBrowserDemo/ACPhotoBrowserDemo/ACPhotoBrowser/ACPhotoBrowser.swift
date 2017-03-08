@@ -72,9 +72,10 @@ class ACPhotoBrowser: UIViewController {
   ///
   /// - Parameter type: PhotoBrowser弹出的方式
   /// - parameter displayIndex: （可选参数）当前显示第几张图片，默认第0张
-  open func show(by type: BrowserShowType, displayIndex: Int = 0) {
+  public func show(by type: BrowserShowType, displayIndex: Int = 0) {
     let currentVC = ACUtils.getCurrentViewController()
     self.displayIndex = displayIndex
+    showType = type
     switch type {
     case .push(animated: let animated):
       currentVC.navigationController?.pushViewController(self, animated: animated)
@@ -85,14 +86,32 @@ class ACPhotoBrowser: UIViewController {
     }
   }
   
+  public func hide() {
+    let currentVC = ACUtils.getCurrentViewController()
+    switch showType {
+    case .push(animated: _):
+      _ = currentVC.navigationController?.popViewController(animated: true)
+    case .present(animated: _):
+      self.dismiss(animated: true, completion: nil)
+    default:
+      break
+    }
+  }
+  
   
   //MARK: - 暂不开放属性
   fileprivate var imgCollectionView: UICollectionView!
 //  fileprivate var type: BrowserType?
   fileprivate var displayIndex: Int = 0
+  private var showType: BrowserShowType = .push(animated: true)
+  fileprivate var topView = ACPhotoBrowserTopView()
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    print("deinit")
   }
 }
 
@@ -114,6 +133,21 @@ extension ACPhotoBrowser {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: true)
+    imgCollectionView.scrollToItem(at: IndexPath(item: displayIndex, section: 0), at: .centeredHorizontally, animated: false)
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setNavigationBarHidden(false, animated: true)
+  }
+  
+  private func setupUI() {
     let layout = UICollectionViewFlowLayout()
     layout.itemSize = CGSize(width: UIScreen.main.bounds.width + margin, height: UIScreen.main.bounds.height)
     layout.scrollDirection = .horizontal
@@ -121,20 +155,19 @@ extension ACPhotoBrowser {
     imgCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width + margin, height: UIScreen.main.bounds.height), collectionViewLayout: layout)
     imgCollectionView.register(ACPhotoBrowserCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     imgCollectionView.dataSource = self
+    imgCollectionView.delegate = self
     imgCollectionView.isPagingEnabled = true
-    imgCollectionView.scrollToItem(at: IndexPath(item: displayIndex, section: 0), at: .centeredHorizontally, animated: false)
     
     view.addSubview(imgCollectionView)
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.setNavigationBarHidden(true, animated: true)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.setNavigationBarHidden(false, animated: true)
+    
+    
+    topView.frame = CGRect(x: 0, y: 20, width: screenWidth, height: 50)
+    topView.handleVC = self
+//    let imagesNum = dataSource?.numberOfImages(in: self) ?? 0
+//    if imagesNum > 1 {
+//      topView.indexLabel.text = "\(displayIndex) / \(imagesNum)"
+//    }
+    view.addSubview(topView)
   }
 }
 
@@ -159,4 +192,23 @@ extension ACPhotoBrowser: UICollectionViewDataSource{
     
     return cell
   }
+}
+
+//MARK:- Delegate
+extension ACPhotoBrowser: UICollectionViewDelegate{
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let offsetX = scrollView.contentOffset.x
+    let imagesNum = dataSource?.numberOfImages(in: self) ?? 0
+    if imagesNum > 1 {
+      let index = Int((offsetX + screenWidth / 2) / screenWidth) + 1
+      if index > imagesNum || index < 0 {
+        return
+      }
+      topView.indexLabel.text = "\(index) / \(imagesNum)"
+    } else {
+      return
+    }
+  }
+  
 }

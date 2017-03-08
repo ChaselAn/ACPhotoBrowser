@@ -15,7 +15,7 @@ class ACPhotoBrowserCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
     contentView.addSubview(imgView)
-    imgView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
+    imgView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.bounds.height)
     imgView.contentMode = .scaleAspectFit
   }
   
@@ -29,7 +29,7 @@ class ACPhotoBrowserCell: UICollectionViewCell {
   
   func setNetImage(_ imageUrl: String?, placeholderImage: UIImage?) {
     guard let imageUrl = imageUrl, !imageUrl.isEmpty else {
-      imgView.image = UIImage(named: "ac_errorImg")
+      imgView.image = UIImage(named: "ac_errorImg".ac_ImagePath)
       return
     }
     if let img = placeholderImage {

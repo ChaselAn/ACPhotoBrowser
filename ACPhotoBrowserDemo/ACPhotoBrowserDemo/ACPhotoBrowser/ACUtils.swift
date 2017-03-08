@@ -7,6 +7,7 @@
 //
 import UIKit
 
+let screenWidth = UIScreen.main.bounds.width
 class ACUtils {
   class func getCurrentViewController(_ vc:UIViewController =  UIApplication.shared.keyWindow!.rootViewController!) -> UIViewController {
     
@@ -33,5 +34,25 @@ class ACUtils {
     } else {
       return vc
     }
+  }
+}
+
+extension String {
+  
+  var ac_ImagePath: String {
+    let path = Bundle.main.path(forResource: "ACPhotoBrowserResource", ofType: "bundle") ?? ""
+    return path + "/" + self
+  }
+  
+}
+
+class ACBackButton: UIButton {
+  
+  override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
+    return CGRect(x: 0, y: 0, width: bounds.height, height: bounds.height)
+  }
+  
+  override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
+    return CGRect(x: bounds.height + 2, y: 0, width: contentRect.width, height: bounds.height)
   }
 }
